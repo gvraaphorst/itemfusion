@@ -17,7 +17,21 @@ public class Item {
 
     public Item() {
         this.name = "DefaultName";
-        this.price = 99999999;
+        this.price = 99999999; //high price
+    }
+
+    public Item(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public Item(String name, Fusion testFusion) {
+        this(name, testFusion.getPrice());
+    }
+
+    public Item(String name, int price, String store) {
+        this(name,price);
+        this.addStore(store);
     }
 
     public String getName() {
@@ -38,6 +52,9 @@ public class Item {
 
     public void addFusion(Fusion fusion) {
         this.fusionList.add(fusion);
+        if(fusion.getPrice() < this.getPrice()){
+            this.setPrice(fusion.getPrice());
+        }
     }
 
     public ArrayList<Integer> getStoreList() {
@@ -53,12 +70,13 @@ public class Item {
         storeNameMap.put("Second", 2);
         storeNameMap.put("Third", 3);
 
-        assert storeNameMap.containsKey(storeString);
-
-        this.addStore(storeNameMap.get(storeString));
-
+        if (storeString.matches("\\d*")) {
+            this.addStore(Integer.parseInt(storeString));
+        } else {
+            assert storeNameMap.containsKey(storeString) : "StoreString is not in storeNameMap";
+            this.addStore(storeNameMap.get(storeString));
+        }
     }
-
 
 
 
